@@ -245,7 +245,7 @@ export default function App() {
           </div>
         ) : (
           <>
-            <div className="mt-4 grid gap-3 lg:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
               {results.slice(0, visible).map((info) => (
                 <CompanyCard
                   key={info.company.id}
