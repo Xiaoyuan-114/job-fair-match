@@ -6,6 +6,7 @@ import { ResumeMatchDialog } from "./fair/ResumeMatchDialog";
 import { FavoritesToolbar } from "./fair/FavoritesToolbar";
 import { ChainHub } from "./chain/ChainHub";
 import { AboutUs } from "./about/AboutUs";
+import mpsIcon from "./assets/public-security-filing.png";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -293,13 +294,24 @@ export default function App() {
               <li>匹配度 = 已设置维度（专业 42 / 期望岗位 15 / 技能 15 / 行业 15 / 地区 10 / 薪资 25）的加权得分，按已设置维度归一为百分比；同分按单位标签数量与展位号排列。</li>
             </ul>
           </details>
-          <p className="mt-3">
-            数据来源：招聘会报名系统导出文件（{meta.generatedAt} 更新）。收录审核通过单位 {meta.approvedRows} 家，同名单位合并后为 {meta.totalCompanies} 家；
-            审核不通过或已取消报名的 {meta.skippedRows} 条不在此列。岗位、薪资与联系方式以单位填报及现场说明为准。
-          </p>
         </footer>
           </>
         )}
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t pt-4 text-xs text-muted-foreground">
+          <a
+            href="https://beian.mps.gov.cn/#/query/webSearch?code=33018502002686"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+          >
+            <img src={mpsIcon} alt="" aria-hidden="true" width={18} height={20} />
+            浙公网安备33018502002686号
+          </a>
+          <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">
+            浙ICP备2026077959号-1
+          </a>
+        </div>
       </main>
 
       <CompanyDetail
