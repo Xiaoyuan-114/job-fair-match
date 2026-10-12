@@ -81,8 +81,15 @@ export function SankeyChart({
     scale,
     X_NODE_R,
   );
-  const bottomL = leftNodes.length ? leftNodes[leftNodes.length - 1]!.y + leftNodes[leftNodes.length - 1]!.h : 0;
-  const bottomR = rightNodes.length ? rightNodes[rightNodes.length - 1]!.y + rightNodes[rightNodes.length - 1]!.h : 0;
+  const bottomL0 = leftNodes.length ? leftNodes[leftNodes.length - 1]!.y + leftNodes[leftNodes.length - 1]!.h : PAD_TOP;
+  const bottomR0 = rightNodes.length ? rightNodes[rightNodes.length - 1]!.y + rightNodes[rightNodes.length - 1]!.h : PAD_TOP;
+  // 两列行数差得多时较矮的一列会悬在上半段，把它垂直居中，上下留白对称
+  const shiftL = Math.max(0, (bottomR0 - bottomL0) / 2);
+  const shiftR = Math.max(0, (bottomL0 - bottomR0) / 2);
+  for (const n of leftNodes) n.y += shiftL;
+  for (const n of rightNodes) n.y += shiftR;
+  const bottomL = bottomL0 + shiftL;
+  const bottomR = bottomR0 + shiftR;
   const H = Math.max(bottomL, bottomR) + 12;
   const L = new Map(leftNodes.map((n) => [n.name, n]));
   const R = new Map(rightNodes.map((n) => [n.name, n]));
