@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.vercel/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.tsbuildinfo
+.qoder-sites/
+.qoder-sites.json
+
+.vercel
+.env*
+
+# 站点描述符（工具管理的发布恢复文件，不入库）
+*.qoder.site
+# 本地开发/测试产物
+dev/*-dist/
+dev/*.log
+# 部署包（构建产物，可随时重新生成）
+部署包-*.zip
