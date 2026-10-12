@@ -1,4 +1,6 @@
 import { Briefcase, Wrench } from "lucide-react";
+import epaPanel from "./assets/epa-panel.jpg";
+import pcHospitalLogo from "./assets/pc-hospital-logo.png";
 
 export function AboutUs() {
   return (
@@ -33,6 +35,12 @@ export function AboutUs() {
               <span className="font-medium text-foreground">职业生涯规划大赛、普通话等级考试</span>，我们承办组织
             </li>
           </ul>
+          <img
+            src={epaPanel}
+            alt="EPA 就业与实践发展协会：会徽、宗旨「源于学生 服务学生」与三个二维码（就业指导服务中心、浙农林大EPA就协、宣姐说就业抖音号）"
+            loading="lazy"
+            className="mt-4 block w-full rounded-lg border"
+          />
         </section>
 
         <section className="rounded-xl border bg-card p-4 sm:p-5">
@@ -52,6 +60,7 @@ export function AboutUs() {
           <p className="mt-3 rounded-lg bg-secondary px-3 py-2 text-xs text-secondary-foreground">
             维修咨询 QQ 群：<span className="tabular-nums">121497441、532502904</span>
           </p>
+          <img src={pcHospitalLogo} alt="浙江农林大学电脑医院印章标识" loading="lazy" className="mx-auto mt-4 block w-[140px]" />
         </section>
       </div>
     </div>
