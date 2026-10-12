@@ -5,6 +5,7 @@ import { CompanyDetail } from "./fair/CompanyDetail";
 import { ResumeMatchDialog } from "./fair/ResumeMatchDialog";
 import { FavoritesToolbar } from "./fair/FavoritesToolbar";
 import { ChainHub } from "./chain/ChainHub";
+import { AboutUs } from "./about/AboutUs";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,20 @@ import { useFavorites } from "./fair/useFavorites";
 import { cn } from "@/lib/utils";
 
 const BATCH = 48;
+
+type View = "match" | "chain" | "about";
+
+const VIEW_TABS: { key: View; label: string }[] = [
+  { key: "match", label: "岗位匹配" },
+  { key: "chain", label: "产业链" },
+  { key: "about", label: "关于我们" },
+];
+
+function readView(): View {
+  if (typeof window === "undefined") return "match";
+  const h = window.location.hash;
+  return h === "#chain" ? "chain" : h === "#about" ? "about" : "match";
+}
 
 const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "match", label: "匹配度优先" },
@@ -29,21 +44,19 @@ export default function App() {
   const [visible, setVisible] = useState(BATCH);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
-  const [view, setView] = useState<"match" | "chain">(() =>
-    typeof window !== "undefined" && window.location.hash === "#chain" ? "chain" : "match",
-  );
+  const [view, setView] = useState<View>(readView);
   const { names: favoriteNames, toggle: toggleFavorite, addMany: addFavorites } = useFavorites();
 
-  const go = (v: "match" | "chain") => {
+  const go = (v: View) => {
     setView(v);
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", v === "chain" ? "#chain" : window.location.pathname + window.location.search);
+      window.history.replaceState(null, "", v === "match" ? window.location.pathname + window.location.search : `#${v}`);
       window.scrollTo(0, 0);
     }
   };
 
   useEffect(() => {
-    const onHash = () => setView(window.location.hash === "#chain" ? "chain" : "match");
+    const onHash = () => setView(readView());
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
@@ -91,7 +104,9 @@ export default function App() {
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-primary-foreground/85">
             {view === "match"
               ? "填上你的专业、学历与期望月薪，单位按匹配度排序；看中的单位记下展位号，现场直接去聊。"
-              : "按产业链浏览参会单位：看结构、找对口链条，点开单位可一键跳回岗位匹配。"}
+              : view === "chain"
+                ? "按产业链浏览参会单位：看结构、找对口链条，点开单位可一键跳回岗位匹配。"
+                : "提供本页面的两个学生组织，认识一下。"}
           </p>
           <div className="mt-4 flex flex-wrap gap-2 text-xs">
             <span className="rounded-full bg-white/12 px-2.5 py-1 tabular-nums">{meta.totalCompanies} 家单位</span>
@@ -100,10 +115,7 @@ export default function App() {
             <span className="rounded-full bg-white/12 px-2.5 py-1">审核通过单位</span>
           </div>
           <nav className="mt-4 flex gap-2" aria-label="站点视图">
-            {([
-              ["match", "岗位匹配"],
-              ["chain", "产业链"],
-            ] as const).map(([key, label]) => (
+            {VIEW_TABS.map(({ key, label }) => (
               <button
                 key={key}
                 type="button"
@@ -126,6 +138,8 @@ export default function App() {
       <main className="mx-auto max-w-5xl px-4 pb-16">
         {view === "chain" ? (
           <ChainHub onGoMatch={goMatch} />
+        ) : view === "about" ? (
+          <AboutUs />
         ) : (
           <>
         <div className="-mt-4 sm:-mt-5">
